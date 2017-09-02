@@ -1985,7 +1985,7 @@
 					picker_lang = (input.data('lang')&&(input.data('lang') in i18n)) ? input.data('lang') : (options.lang&&(options.lang in i18n) ? options.lang : 'en'),
 					picker_large = (input.data('large-mode') != null ? input.data('large-mode') : options.largeMode)===true,
 					picker_large_class = ((input.data('large-default') != null ? input.data('large-default') : options.largeDefault)===true && picker_large===true) ? 'picker-lg' : '',
-					picker_lock = ['from','to'].indexOf(input.data('lock')) > 0 ? input.data('lock') : (['from','to'].indexOf(options.lock) > 0 ? options.lock : false),
+					picker_lock = ['from','to'].indexOf(input.data('lock')) > -1 ? input.data('lock') : (['from','to'].indexOf(options.lock) > -1 ? options.lock : false),
 					picker_jump = (input.data('jump')!==null&&is_int(input.data('jump'))) ? input.data('jump') : ((options.jump!==null&&is_int(options.jump)) ? options.jump : 10),
 					picker_max_year = (input.data('max-year')!==null&&is_int(input.data('max-year'))) ? input.data('max-year') : ((options.maxYear&&is_int(options.maxYear)) ? options.maxYear : new Date().getFullYear()),
 					picker_min_year = (input.data('min-year')!==null&&is_int(input.data('min-year'))) ? input.data('min-year') : ((options.minYear&&is_int(options.minYear)) ? options.minYear : 1970),
