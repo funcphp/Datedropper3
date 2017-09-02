@@ -1958,7 +1958,7 @@
 		}
 	});
 
-	$.fn.dateDropper = function(options) {
+	$.fn.dateDropper = function(options = {}) {
 		return $(this).each(function(){
 			if($(this).is('input')&&!$(this).hasClass('picker-input')) {
 
@@ -1975,26 +1975,26 @@
 				});
 
 				var
-					picker_default_date = (input.data('default-date')&&is_date(input.data('default-date'))) ? input.data('default-date') : null,
-					picker_disabled_days = (input.data('disabled-days')) ? input.data('disabled-days').split(',') : null,
-					picker_format = input.data('format') || 'm/d/Y',
-					picker_fx = (input.data('fx')===false) ? input.data('fx') : true,
-					picker_fx_class = (input.data('fx')===false) ? '' : 'picker-fxs',
-					picker_fx_mobile = (input.data('fx-mobile')===false) ? input.data('fx-mobile') : true,
-					picker_init_set = (input.data('init-set')===false) ? false : true,
-					picker_lang = (input.data('lang')&&(input.data('lang') in i18n)) ? input.data('lang') : 'en',
-					picker_large = (input.data('large-mode')===true) ? true : false,
-					picker_large_class = (input.data('large-default')===true && picker_large===true) ? 'picker-lg' : '',
-					picker_lock = (input.data('lock')=='from'||input.data('lock')=='to') ? input.data('lock') : false,
-					picker_jump = (input.data('jump')&&is_int(input.data('jump'))) ? input.data('jump') : 10,
-					picker_max_year = (input.data('max-year')&&is_int(input.data('max-year'))) ? input.data('max-year') : new Date().getFullYear(),
-					picker_min_year = (input.data('min-year')&&is_int(input.data('min-year'))) ? input.data('min-year') : 1970,
+					picker_default_date = (input.data('default-date')&&is_date(input.data('default-date'))) ? input.data('default-date') : (options.defaultDate&&is_date(options.defaultDate) ? options.defaultDate : null),
+					picker_disabled_days = (options.disabledDays != null ? options.disabledDays : []).concat((input.data('disabled-days')) ? input.data('disabled-days').split(',') : []),
+					picker_format = input.data('format') || options.format || 'm/d/Y',
+					picker_fx = (input.data('fx') != null ? input.data('fx') : options.fx)!==true,
+					picker_fx_class = !picker_fx ? '' : 'picker-fxs',
+					picker_fx_mobile = (input.data('fx-mobile') != null ? input.data('fx-mobile') : options.fxMobile)!==true,
+					picker_init_set = (input.data('init-set') != null ? input.data('init-set') : options.initSet)===true,
+					picker_lang = (input.data('lang')&&(input.data('lang') in i18n)) ? input.data('lang') : (options.lang&&(options.lang in i18n) ? options.lang : 'en'),
+					picker_large = (input.data('large-mode') != null ? input.data('large-mode') : options.largeMode)===true,
+					picker_large_class = ((input.data('large-default') != null ? input.data('large-default') : options.largeDefault)===true && picker_large===true) ? 'picker-lg' : '',
+					picker_lock = ['from','to'].indexOf(input.data('lock')) > 0 ? input.data('lock') : (['from','to'].indexOf(options.lock) > 0 ? options.lock : false),
+					picker_jump = (input.data('jump')!==null&&is_int(input.data('jump'))) ? input.data('jump') : ((options.jump!==null&&is_int(options.jump)) ? options.jump : 10),
+					picker_max_year = (input.data('max-year')!==null&&is_int(input.data('max-year'))) ? input.data('max-year') : ((options.maxYear&&is_int(options.maxYear)) ? options.maxYear : new Date().getFullYear()),
+					picker_min_year = (input.data('min-year')!==null&&is_int(input.data('min-year'))) ? input.data('min-year') : ((options.minYear&&is_int(options.minYear)) ? options.minYear : 1970),
 
-					picker_modal = (input.data('modal')===true) ? 'picker-modal' : '',
-					picker_theme = input.data('theme') || 'primary',
-					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
+					picker_modal = (input.data('modal') != null ? input.data('modal') : options.modal)===true ? 'picker-modal' : '',
+					picker_theme = input.data('theme') || options.theme || 'primary',
+					picker_translate_mode = (input.data('translate-mode') != null ? input.data('translate-mode') : options.translateMode)===true;
 
-				if(picker_disabled_days) {
+				if(picker_disabled_days.length) {
 					$.each(picker_disabled_days, function( index, value ) {
 						if(value&&is_date(value))
 							picker_disabled_days[index] = get_unix(value);
